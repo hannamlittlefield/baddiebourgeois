@@ -1,9 +1,12 @@
+import "./App.css"
+
 import React, { useEffect, useState } from "react";
 
 function App() {
   const [data, setData] = useState(null);  // State variable to store fetched data
   const [loading, setLoading] = useState(true);  // State variable for loading status
   const [error, setError] = useState(null);  // State variable to store error, if any
+  const [showBuildings, setShowBuildings] = useState(false);
 
   useEffect(() => {
     async function fetchAOE() {
@@ -30,16 +33,22 @@ function App() {
   if (loading) return <p>Loading...</p>;  // Show loading message while fetching
   if (error) return <p>Error: {error}</p>;  // Show error message if an error occurred
 
+  const handleButtonToggle = () => {
+    setShowBuildings(!showBuildings);
+  };
+
   return (
     <div className="App">
-        <h1>What's a {data[1].ageName} building?</h1>
-        <ul>
-          {data[1].buildings.map(building => (
-            <li key={building.id}>
-              {building.buildingName}
-            </li>
-          ))}
-        </ul>
+        <h1><button onClick={handleButtonToggle}>...What's a {data[1].ageName} building?</button></h1>
+        {showBuildings && (
+          <ul className="no-bullets">
+            {data[1].buildings.map(building => (
+              <li key={building.id}>
+                {building.buildingName}
+              </li>
+            ))}
+          </ul>
+        )}
     </div>
   );
 }
